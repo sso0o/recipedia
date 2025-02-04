@@ -1,5 +1,7 @@
 import connectToDB  from '../../lib/mongodb'; // DB 연결 함수
 import User from "@/app/models/User";
+import { NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
 
 export async function POST(req) {
     try {
@@ -40,5 +42,28 @@ export async function POST(req) {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });
+    }
+}
+
+export async function GET(req) {
+    try {
+        await connectToDB();
+
+        const token = req.cookies.get("token")?.value;
+        if (!token) {
+            return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id).select("-password");
+
+        if (!user) {
+            return NextResponse.json({ message: "User not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(user, { status: 200 });
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }

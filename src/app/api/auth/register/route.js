@@ -1,6 +1,6 @@
 // /pages/api/signup.js
-import connectToDB  from '../../lib/mongodb'; // DB 연결 함수
-import User from '../../models/User';
+import connectToDB  from '../../../lib/mongodb'; // DB 연결 함수
+import User from '../../../models/User';
 
 export default async function handler(req, res) {
     if (req.method === "POST") {

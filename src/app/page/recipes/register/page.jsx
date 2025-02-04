@@ -124,7 +124,7 @@ export default function RecipeForm() {
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold text-center text-blue-600 mb-6">레시피 등록</h1>
+            <h1 className="text-3xl font-bold text-center text-gray-700 mb-6">레시피 등록</h1>
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* 레시피 제목 입력 */}
                 <div className="space-y-2">
@@ -176,12 +176,12 @@ export default function RecipeForm() {
                         onChange={(e) => setCategory(e.target.value)}
                     >
                         <option value="">카테고리 선택</option>
-                        <option value="한식">한식</option>
-                        <option value="중식">중식</option>
-                        <option value="일식">일식</option>
-                        <option value="양식">양식</option>
-                        <option value="기타">기타</option>
-                        <option value="디저트">디저트</option>
+                        <option value="kor">한식</option>
+                        <option value="chi">중식</option>
+                        <option value="jpn">일식</option>
+                        <option value="wes">양식</option>
+                        <option value="etc">기타</option>
+                        <option value="des">디저트</option>
                     </select>
                 </div>
 
@@ -200,7 +200,17 @@ export default function RecipeForm() {
 
                 {/* 재료 입력 */}
                 <div className="space-y-2">
-                    <label className="block text-lg font-semibold text-gray-700">재료</label>
+                    <div className="flex items-center">
+                        <span className="text-lg font-semibold text-gray-700">재료</span>
+                        <button
+                            type="button"
+                            className="bg-orange-400 text-white mx-3 px-3 py-1.5 rounded-lg hover:bg-orange-500 text-sm"
+                            onClick={addIngredient}
+                        >
+                            +
+                        </button>
+                    </div>
+                    {/*<label className="block text-lg font-semibold text-gray-700">재료</label>*/}
                     {ingredients.map((ingredient, index) => (
                         <div key={index} className="flex items-center gap-4">
                             <input
@@ -227,22 +237,32 @@ export default function RecipeForm() {
                                 onClick={() => removeIngredient(index)}
                                 disabled={ingredients.length === 1} // 재료가 하나일 경우 삭제 버튼 비활성화
                             >
-                                <FaTrashAlt />
+                                <FaTrashAlt/>
                             </button>
                         </div>
                     ))}
-                    <button
-                        type="button"
-                        className="w-full px-4 py-2 mt-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                        onClick={addIngredient}
-                    >
-                        재료 추가
-                    </button>
+                    {/*<button*/}
+                    {/*    type="button"*/}
+                    {/*    className="w-full px-4 py-2 mt-2 bg-green-500 text-white rounded-lg hover:bg-green-600"*/}
+                    {/*    onClick={addIngredient}*/}
+                    {/*>*/}
+                    {/*    재료 추가*/}
+                    {/*</button>*/}
                 </div>
 
                 {/* 조리법 입력 */}
                 <div className="space-y-2">
-                    <label className="block text-lg font-semibold text-gray-700">조리 순서</label>
+                    <div className="flex items-center">
+                        <span className="text-lg font-semibold text-gray-700">조리 순서</span>
+                        <button
+                            type="button"
+                            className="bg-orange-400 text-white mx-3 px-3 py-1.5 rounded-lg hover:bg-orange-500 text-sm"
+                            onClick={addInstruction}
+                        >
+                            +
+                        </button>
+                    </div>
+                    <label className="block text-lg font-semibold text-gray-700"></label>
                     {instructions.map((instruction, index) => (
                         <div key={index} className="flex items-center gap-4">
                             <span className="text-lg font-semibold text-gray-700">{index + 1}.</span>
@@ -260,22 +280,15 @@ export default function RecipeForm() {
                                 onClick={() => removeInstruction(index)}
                                 disabled={instructions.length === 1} // 순서가 하나일 경우 삭제 버튼 비활성화
                             >
-                                <FaTrashAlt />
+                                <FaTrashAlt/>
                             </button>
                         </div>
                     ))}
-                    <button
-                        type="button"
-                        className="w-full px-4 py-2 mt-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                        onClick={addInstruction}
-                    >
-                        조리법 추가
-                    </button>
                 </div>
 
                 <button
                     type="submit"
-                    className="w-full px-4 py-2 mt-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    className="w-full px-4 py-2 mt-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
                 >
                     레시피 등록
                 </button>

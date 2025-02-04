@@ -1,5 +1,7 @@
 import connectToDB from '../../../lib/mongodb'; // DB 연결 함수
 import Recipe from '../../../models/Recipe';
+import { NextResponse } from 'next/server';
+
 
 
 export async function GET(req) {
@@ -42,9 +44,10 @@ export async function GET(req) {
         // 필터를 적용하여 레시피 조회
         const recipes = await Recipe.find(filter);
 
-        return new Response(JSON.stringify(recipes), { status: 200 });
+
+        return new NextResponse(JSON.stringify(recipes), { status: 200 });
     } catch (error) {
         console.error("레시피 검색 오류:", error);
-        return new Response(JSON.stringify({ message: "서버 오류" }), { status: 500 });
+        return new NextResponse(JSON.stringify({ message: "서버 오류" }), { status: 500 });
     }
 }

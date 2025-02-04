@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Home() {
@@ -11,6 +12,24 @@ export default function Home() {
   const [category, setCategory] = useState("");
   const [cookingTime, setCookingTime] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);  // 로그인 상태
+  const router = useRouter();  // Next.js 라우터
+
+  // 로그인 상태 확인 (예시로 localStorage를 사용)
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // 혹은 쿠키로 확인할 수 있음
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // 레시피 등록 페이지로 리다이렉트 (로그인 상태 체크)
+  const handleRecipeRegister = () => {
+    if (isAuthenticated) {
+      router.push("/page/recipes/register");  // 로그인 되어 있으면 레시피 등록 페이지로 이동
+    } else {
+      router.push("/page/login");  // 로그인 되어 있지 않으면 로그인 페이지로 이동
+    }
+  };
+
 
   // 인기 레시피 가져오기
   useEffect(() => {
@@ -61,16 +80,23 @@ export default function Home() {
   }, [search, category, cookingTime]);
 
   return (
-      <div className="container mx-auto p-4">
-        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-10">추천 레시피</h1>
+      <div className="flex flex-col w-full sm:min-w-[320px] md:min-w-[600px] lg:min-w-[800px]">
+        <div className="flex justify-end mb-8">
+            <button
+                onClick={handleRecipeRegister}  // 버튼 클릭 시 로그인 상태 확인 후 이동
+                className="px-6 py-3 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 transition transform hover:scale-105">
+              레시피 등록
+            </button>
+        </div>
 
         {/* 인기 레시피 섹션 */}
         <section className="mb-14">
           <h2 className="text-3xl font-semibold text-gray-700 mb-6">🔥 인기 레시피</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {popularRecipes.map((recipe) => (
-                <Link key={recipe._id} href={`/recipes/${recipe._id}`} className="block">
-                  <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
+                <Link key={recipe._id} href={`/src/app/page/recipes/${recipe._id}`} className="block">
+                  <div
+                      className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
                     <h3 className="text-2xl font-semibold text-gray-800 mb-3">{recipe.title}</h3>
                     <p className="text-gray-600 text-sm">{recipe.likes} Likes | {recipe.views} Views</p>
                   </div>
@@ -83,8 +109,9 @@ export default function Home() {
         <section className="mb-14">
           <h2 className="text-3xl font-semibold text-gray-700 mb-6">🌟 오늘의 추천 레시피</h2>
           {randomRecipe ? (
-              <Link href={`/recipes/${randomRecipe._id}`} className="block">
-                <div className="bg-yellow-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
+              <Link href={`/src/app/page/recipes/${randomRecipe._id}`} className="block">
+                <div
+                    className="bg-yellow-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
                   <h3 className="text-2xl font-semibold text-gray-800">{randomRecipe.title}</h3>
                 </div>
               </Link>
@@ -112,12 +139,12 @@ export default function Home() {
                 onChange={(e) => setCategory(e.target.value)}
             >
               <option value="">카테고리 선택</option>
-              <option value="한식">한식</option>
-              <option value="중식">중식</option>
-              <option value="일식">일식</option>
-              <option value="양식">양식</option>
-              <option value="기타">기타</option>
-              <option value="디저트">디저트</option>
+              <option value="kor">한식</option>
+              <option value="chi">중식</option>
+              <option value="jpn">일식</option>
+              <option value="wes">양식</option>
+              <option value="etc">기타</option>
+              <option value="des">디저트</option>
             </select>
 
             {/* 조리시간 필터 */}
@@ -139,8 +166,9 @@ export default function Home() {
         ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {recipes.map((recipe) => (
-                  <Link key={recipe._id} href={`/recipes/${recipe._id}`} className="block">
-                    <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
+                  <Link key={recipe._id} href={`/src/app/page/recipes/${recipe._id}`} className="block">
+                    <div
+                        className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
                       <h3 className="text-2xl font-semibold text-gray-800 mb-3">{recipe.title}</h3>
                       <p className="text-gray-600 text-sm">{recipe.likes} Likes | {recipe.views} Views</p>
                     </div>

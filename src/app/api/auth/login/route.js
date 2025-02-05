@@ -26,7 +26,7 @@ export async function POST(req) {
     const token = jwt.sign(user.toObject(), process.env.JWT_SECRET, { expiresIn: "1h" });
 
     // 쿠키에 토큰 추가 (NextResponse의 cookies API 사용)
-    const res = NextResponse.json({ message: 'Logged in successfully' });
+    const res = NextResponse.json({ message: 'Logged in successfully', token });
     res.cookies.set('token', token, {
         httpOnly: true,  // JavaScript에서 접근 불가
         secure: process.env.NODE_ENV === 'production',  // 프로덕션 환경에서만 secure 사용

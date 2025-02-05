@@ -31,7 +31,7 @@ export default function MyInfo() {
                     <p>Loading...</p>
                 ) : user ? (
                     <div className="space-y-4">
-                        <p className="text-lg font-medium">Name: <span className="text-gray-700">{user.name}</span></p>
+                        <p className="text-lg font-medium">Name: <span className="text-gray-700">{user.username}</span></p>
                         <p className="text-lg font-medium">Email: <span className="text-gray-700">{user.email}</span></p>
                     </div>
                 ) : (

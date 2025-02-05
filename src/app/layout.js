@@ -1,38 +1,12 @@
 "use client";
 import "./globals.css";
-import Link from "next/link";
-import {useEffect, useState} from "react";
+import { AuthProvider } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
+
 
 export default function RootLayout({ children }) {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 관리
-
-    // 메뉴 열고 닫기 함수
-    const toggleMenu = () => {
-        setIsMenuOpen((prev) => !prev); // 토글 상태
-    };
-
-    // 링크 클릭 시 메뉴 닫기
-    const closeMenu = () => {
-        setIsMenuOpen(false);
-    };
-
-    // 로그인 상태 체크
-    useEffect(() => {
-        const token = localStorage.getItem("token"); // JWT 토큰을 로컬 스토리지에서 가져오기
-        if (token) {
-            setIsLoggedIn(true);
-        } else {
-            setIsLoggedIn(false);
-        }
-    }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem("token"); // 로그아웃 시 토큰 삭제
-        setIsLoggedIn(false); // 상태 업데이트
-    };
-
     return (
+        <AuthProvider>
         <html lang="en">
         <head>
             <title>RECIPEDIA</title>
@@ -42,110 +16,7 @@ export default function RootLayout({ children }) {
         <body className="font-sans bg-gray-100 text-gray-900 flex flex-col min-h-screen">
         {/* Header */}
         <header className="bg-gray-800 text-white py-4 shadow-md fixed w-full top-0 left-0 z-10">
-            <nav className="max-w-7xl mx-auto px-4 flex items-center justify-between">
-                {/* 로고 및 메뉴 버튼 */}
-                <div className="flex-1 flex items-center">
-                    <button
-                        className="md:hidden text-xl font-semibold hover:text-orange-400 transition duration-300"
-                        onClick={toggleMenu}
-                    >
-                        ☰
-                    </button>
-                </div>
-
-                {/* 데스크탑 메뉴 */}
-                <div className="hidden md:flex flex-1 justify-center gap-8">
-                    <Link
-                        href="/"
-                        className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        href="/page/recipes"
-                        className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                    >
-                        Recipe
-                    </Link>
-                    {isLoggedIn && (
-                        <Link
-                            href="/page/mypage"
-                            className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                        >
-                            MyPage
-                        </Link>
-                    )}
-                    {/* 로그인 상태에 따라 다르게 표시 */}
-                    {isLoggedIn ? (
-                        <button
-                            className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                            onClick={handleLogout}
-                        >
-                            로그아웃
-                        </button>
-                    ) : (
-                        <Link
-                            href="/page/login"
-                            className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                        >
-                            로그인
-                        </Link>
-                    )}
-                </div>
-            </nav>
-
-            {/* 모바일 메뉴 */}
-            <div
-                className={`${
-                    isMenuOpen ? "block" : "hidden"
-                } absolute top-0 left-0 w-full bg-gray-800 text-white px-4 py-6 md:hidden transition-all duration-300 z-20`}
-            >
-                <div className="flex flex-col items-center gap-6">
-                    <Link
-                        href="/"
-                        className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                        onClick={closeMenu} // 링크 클릭 시 메뉴 닫기
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        href="/page/recipes"
-                        className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                        onClick={closeMenu} // 링크 클릭 시 메뉴 닫기
-                    >
-                        Recipe
-                    </Link>
-                    {isLoggedIn && (
-                        <Link
-                            href="/page/mypage"
-                            className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                            onClick={closeMenu} // 링크 클릭 시 메뉴 닫기
-                        >
-                            MyPage
-                        </Link>
-                    )}
-                    {/* 모바일에서도 로그인 상태에 따라 다르게 표시 */}
-                    {isLoggedIn ? (
-                        <button
-                            className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                            onClick={() => {
-                                closeMenu();
-                                handleLogout();
-                            }}
-                        >
-                            로그아웃
-                        </button>
-                    ) : (
-                        <Link
-                            href="/page/login"
-                            className="text-xl font-semibold hover:text-orange-400 transition duration-300"
-                            onClick={closeMenu} // 링크 클릭 시 메뉴 닫기
-                        >
-                            로그인
-                        </Link>
-                    )}
-                </div>
-            </div>
+            <Navbar></Navbar>
         </header>
 
         {/* Main Content */}
@@ -159,5 +30,6 @@ export default function RootLayout({ children }) {
         </footer>
         </body>
         </html>
+        </AuthProvider>
     );
 }

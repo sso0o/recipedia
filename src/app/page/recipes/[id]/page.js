@@ -1,15 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import {useState, useEffect, useContext} from "react";
+import {useParams, useRouter} from "next/navigation";
 import Link from "next/link";
+import { AuthContext } from "../../../context/AuthContext";
+import like from "@/app/models/Like"; // 인증 컨텍스트
 
 export default function RecipeDetail() {
     const { id } = useParams();
+    const router = useRouter();
+    const { isLoggedIn } = useContext(AuthContext); // 로그인 여부 확인
+
     const [recipe, setRecipe] = useState(null);
     const [ingredients, setIngredients] = useState([]);
     const [instructions, setInstructions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [liked, setLiked] = useState(false);
 
     useEffect(() => {
         const fetchRecipe = async () => {
@@ -26,6 +32,17 @@ export default function RecipeDetail() {
                 setRecipe(recipeData);
                 setIngredients(ingredientsData);
                 setInstructions(instructionsData.sort((a, b) => a.order - b.order));
+
+                const token = localStorage.getItem("token");
+                if (token) {
+                    const likeResponse = await fetch(`/api/recipes/${id}/likes`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+                    const likeData = await likeResponse.json();
+                    setLiked(likeData);
+                }
             } catch (error) {
                 console.error("레시피 가져오기 실패:", error);
             } finally {
@@ -34,6 +51,33 @@ export default function RecipeDetail() {
         };
         if (id) fetchRecipe();
     }, [id]);
+
+    // 좋아요 버튼 클릭 핸들러
+    const handleLike = async () => {
+
+        if (!isLoggedIn) {
+            alert("로그인이 필요한 서비스입니다.");
+            router.push("/page/login"); // 로그인 페이지로 이동
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/recipes/${id}/likes`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",  // 쿠키를 요청에 포함시키는 옵션
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setLiked(data);
+            }
+        } catch (error) {
+            console.error("좋아요 처리 실패:", error);
+        }
+    };
 
     if (loading) return <p className="text-center text-gray-500 text-lg">로딩 중...</p>;
     if (!recipe) return <p className="text-center text-gray-500 text-lg">레시피를 찾을 수 없습니다.</p>;
@@ -54,7 +98,14 @@ export default function RecipeDetail() {
                 🕒 조리 시간: {recipe.cookingTime}분 | 📌 카테고리: {recipe.category}
             </p>
 
-            {/* 🛒 재료 목록 */}
+            {/* 좋아요 버튼 */}
+            <div className="flex justify-center mb-4">
+                <button onClick={handleLike} className="text-2xl">
+                    {liked ? "❤️" : "🤍"}
+                </button>
+            </div>
+
+            {/* 재료 목록 */}
             <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mt-6 mb-4 border-b-2 pb-2">🛒 재료</h2>
             {ingredients.length > 0 ? (
                 <ul className="space-y-3">
@@ -69,7 +120,7 @@ export default function RecipeDetail() {
                 <p className="text-gray-500">등록된 재료가 없습니다.</p>
             )}
 
-            {/* 👨‍🍳 조리 순서 */}
+            {/* 조리 순서 */}
             <h2 className="text-lg sm:text-xl font-semibold text-gray-700 mt-6 mb-4 border-b-2 pb-2">👨‍🍳 조리 순서</h2>
             {instructions.length > 0 ? (
                 <ol className="space-y-4">

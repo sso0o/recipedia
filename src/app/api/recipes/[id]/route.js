@@ -5,9 +5,9 @@ export async function GET(req, { params }) {
     try {
         await connectToDB();
 
-        // params 객체를 제대로 받는 방식으로 수정
-        const recipeId = params.id; // params.id 가져오기 (비동기 처리는 필요 없음)
-        const recipe = await Recipe.findById(recipeId);
+        const { id } = await params;
+        // const recipeId = params.id; // params.id 가져오기 (비동기 처리는 필요 없음)
+        const recipe = await Recipe.findById(id);
 
         if (!recipe) {
             return new Response("레시피를 찾을 수 없습니다.", { status: 404 });

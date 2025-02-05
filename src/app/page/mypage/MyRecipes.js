@@ -33,7 +33,7 @@ export default function MyRecipes() {
                 <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {recipes.map((recipe) => (
                         <div key={recipe._id} className="bg-white shadow-lg rounded-lg overflow-hidden transform hover:scale-105 transition-all duration-300 w-full ">
-                            <div className="h-48 bg-gray-200">
+                            <div className="hidden md:flex h-48 bg-gray-200">
                                 {/* 레시피 이미지 placeholder */}
                                 <img
                                     src={recipe.image || "/placeholder.png"} // 기본 이미지 제공

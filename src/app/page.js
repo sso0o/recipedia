@@ -94,7 +94,7 @@ export default function Home() {
           <h2 className="text-3xl font-semibold text-gray-700 mb-6">🔥 인기 레시피</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {popularRecipes.map((recipe) => (
-                <Link key={recipe._id} href={`/src/app/page/recipes/${recipe._id}`} className="block">
+                <Link key={recipe._id} href={`/page/recipes/${recipe._id}`} className="block">
                   <div
                       className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
                     <h3 className="text-2xl font-semibold text-gray-800 mb-3">{recipe.title}</h3>
@@ -109,7 +109,7 @@ export default function Home() {
         <section className="mb-14">
           <h2 className="text-3xl font-semibold text-gray-700 mb-6">🌟 오늘의 추천 레시피</h2>
           {randomRecipe ? (
-              <Link href={`/src/app/page/recipes/${randomRecipe._id}`} className="block">
+              <Link href={`/page/recipes/${randomRecipe._id}`} className="block">
                 <div
                     className="bg-yellow-100 p-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105">
                   <h3 className="text-2xl font-semibold text-gray-800">{randomRecipe.title}</h3>

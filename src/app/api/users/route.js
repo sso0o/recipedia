@@ -55,7 +55,7 @@ export async function GET(req) {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findById(decoded.id).select("-password");
+        const user = await User.findById(decoded._id).select("-password")
 
         if (!user) {
             return NextResponse.json({ message: "User not found" }, { status: 404 });

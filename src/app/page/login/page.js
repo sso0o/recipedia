@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import {useContext, useState} from "react";
 import { useRouter } from "next/navigation";
+import { AuthContext } from "../../context/AuthContext";
+
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+
+    const { login } = useContext(AuthContext);
     const router = useRouter();
 
     const handleLogin = async (e) => {
@@ -22,8 +26,7 @@ export default function Login() {
 
             const data = await res.json();
             if (!res.ok) throw new Error(data.message || "로그인 실패");
-
-            localStorage.setItem("token", data.token);
+            login(data.token); // 상태 업데이트
             router.push("/");
         } catch (err) {
             setError(err.message);

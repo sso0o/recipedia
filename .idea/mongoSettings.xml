@@ -7,7 +7,7 @@
           <option name="label" value="Cluster0" />
           <option name="serverUrls">
             <list>
-              <option value="mongodb+srv://sssssoyyyy:DcJ5nSVi6XoLpf1W@cluster0.53qv2.mongodb.net/recipedia" />
+              <option value="mongodb+srv://sssssoyyyy:NYeyXcJJNQmaVnBv@cluster0.53qv2.mongodb.net/recipedia" />
             </list>
           </option>
           <option name="shellWorkingDir" value="null" />

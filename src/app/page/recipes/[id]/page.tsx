@@ -87,7 +87,7 @@ export default function RecipeDetail(): JSX.Element {
         }
 
         try {
-            const response = await fetch(`/api/recipes/${id}/likes`, {
+            const response = await fetch(`/api/recipes/${id}/like`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -115,11 +115,15 @@ export default function RecipeDetail(): JSX.Element {
     return (
         <div className="flex flex-col w-full sm:min-w-[320px] md:min-w-[600px] lg:min-w-[800px] my-10 p-6 sm:p-8 md:p-10 bg-white rounded-2xl shadow-lg border border-gray-200">
             {recipe.image && (
-                <Image
-                    src={recipe.image}
-                    alt={recipe.title}
-                    className="w-full h-48 sm:h-56 md:h-64 lg:h-80 object-cover rounded-xl mb-6 shadow-md"
-                />
+                <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-80 mb-6">
+                    <Image
+                        src={recipe.image}
+                        alt={recipe.title}
+                        fill
+                        className="object-cover rounded-xl shadow-md"
+                    />
+                </div>
+
             )}
 
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6">

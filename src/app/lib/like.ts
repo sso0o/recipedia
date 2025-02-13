@@ -15,13 +15,13 @@ export async function toggleLike(
 ): Promise<boolean> {
     if (!userId) throw new Error("Unauthorized"); // 로그인 안 된 경우 예외 발생
 
-    const existingLike = await Like.findOne({ userId, recipeId });
+    const existingLike = await Like.findOne({ user: userId, recipe: recipeId });
 
     if (existingLike) {
         await Like.deleteOne({ _id: existingLike._id });
         return false; // 좋아요 취소됨
     } else {
-        await Like.create({ userId, recipeId });
+        await Like.create({ user: userId, recipe: recipeId });
         return true; // 좋아요 추가됨
     }
 }

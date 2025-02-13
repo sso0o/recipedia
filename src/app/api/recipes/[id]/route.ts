@@ -4,13 +4,13 @@ import { NextResponse, NextRequest } from 'next/server';
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params, searchParams }: { params: Promise<{ id: string }>, searchParams: URLSearchParams }
 ): Promise<Response> {
     try {
         await connectToDB();
 
-        // params는 이미 동기적인 객체이므로 await 제거
-        const { id } = params;
+        // params를 await 처리하여 동기 객체로 만듭니다.
+        const { id } = await params;
         const recipe = await Recipe.findById(id);
 
         if (!recipe) {

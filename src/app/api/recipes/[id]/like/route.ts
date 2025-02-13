@@ -31,7 +31,6 @@ export async function POST(
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
     const userId = data.userId;
-
     if (!userId) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }

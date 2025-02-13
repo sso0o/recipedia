@@ -1,5 +1,4 @@
-"use client";
-import "./globals.css";
+import "@/globals.css";
 import {JSX, ReactNode} from "react";
 import Navbar from "@/components/Navbar";
 import {AuthProvider} from "@/context/AuthContext";

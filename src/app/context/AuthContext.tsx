@@ -1,6 +1,8 @@
 "use client";
 
 import {createContext, useState, useEffect, ReactNode, JSX} from "react";
+import Cookies from "js-cookie";
+
 
 interface AuthContextType {
     isLoggedIn: boolean;
@@ -28,13 +30,13 @@ export const AuthProvider = ({ children }: AuthProviderProps): JSX.Element => {
 
     const login = (token: string) => {
         localStorage.setItem("token", token);
+        Cookies.set("token", token, { expires: 1, path: "/", secure: process.env.NODE_ENV === "production" });
         setIsLoggedIn(true);
     };
 
     const logout = () => {
         localStorage.removeItem("token");
-        document.cookie =
-            "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        Cookies.remove("token", { path: "/" });
         setIsLoggedIn(false);
     };
 

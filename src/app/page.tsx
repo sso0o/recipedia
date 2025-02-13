@@ -38,55 +38,55 @@ export default function Home() {
         }
     };
 
-    // // 인기 레시피 가져오기
-    // useEffect(() => {
-    //     const fetchPopularRecipes = async () => {
-    //         try {
-    //             const response = await fetch("/api/recipes/popular");
-    //             const data: Recipe[] = await response.json();
-    //             setPopularRecipes(data);
-    //         } catch (error) {
-    //             console.error("인기 레시피 가져오기 실패:", error);
-    //         }
-    //     };
-    //     fetchPopularRecipes();
-    // }, []);
-    //
-    // // 오늘의 추천 레시피 가져오기
-    // useEffect(() => {
-    //     const fetchRandomRecipe = async () => {
-    //         try {
-    //             const response = await fetch("/api/recipes/random");
-    //             const data: Recipe = await response.json();
-    //             setRandomRecipe(data);
-    //         } catch (error) {
-    //             console.error("오늘의 추천 레시피 가져오기 실패:", error);
-    //         }
-    //     };
-    //     fetchRandomRecipe();
-    // }, []);
+    // 인기 레시피 가져오기
+    useEffect(() => {
+        const fetchPopularRecipes = async () => {
+            try {
+                const response = await fetch("/api/recipes/search?type=popular");
+                const data: Recipe[] = await response.json();
+                setPopularRecipes(data);
+            } catch (error) {
+                console.error("인기 레시피 가져오기 실패:", error);
+            }
+        };
+        fetchPopularRecipes();
+    }, []);
 
-    // // 레시피 검색 및 필터링 가져오기
-    // useEffect(() => {
-    //     const fetchRecipes = async () => {
-    //         setLoading(true);
-    //         try {
-    //             const response = await fetch(
-    //                 `/api/recipes/search?search=${encodeURIComponent(
-    //                     search
-    //                 )}&category=${encodeURIComponent(category)}&cookingTime=${encodeURIComponent(cookingTime)}`
-    //             );
-    //             const data: Recipe[] = await response.json();
-    //             setRecipes(data);
-    //         } catch (error) {
-    //             console.error("레시피 가져오기 실패:", error);
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-    //
-    //     fetchRecipes();
-    // }, [search, category, cookingTime]);
+    // 오늘의 추천 레시피 가져오기
+    useEffect(() => {
+        const fetchRandomRecipe = async () => {
+            try {
+                const response = await fetch("/api/recipes/search?type=random");
+                const data: Recipe = await response.json();
+                setRandomRecipe(data);
+            } catch (error) {
+                console.error("오늘의 추천 레시피 가져오기 실패:", error);
+            }
+        };
+        fetchRandomRecipe();
+    }, []);
+
+    // 레시피 검색 및 필터링 가져오기
+    useEffect(() => {
+        const fetchRecipes = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(
+                    `/api/recipes/search?type=search&search=${encodeURIComponent(
+                        search
+                    )}&category=${encodeURIComponent(category)}&cookingTime=${encodeURIComponent(cookingTime)}`
+                );
+                const data: Recipe[] = await response.json();
+                setRecipes(data);
+            } catch (error) {
+                console.error("레시피 가져오기 실패:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchRecipes();
+    }, [search, category, cookingTime]);
 
     return (
         <div className="flex flex-col w-full sm:min-w-[320px] md:min-w-[600px] lg:min-w-[800px]">

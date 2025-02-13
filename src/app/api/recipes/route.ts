@@ -4,8 +4,6 @@ import path from "path";
 import fs from 'fs/promises';
 import Recipe from '@/models/Recipe';
 
-
-
 export async function POST(req: Request): Promise<NextResponse> {
     try {
         // 업로드 폴더 생성
@@ -59,7 +57,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     }
 }
 
-export async function GET(req: Request): Promise<Response> {
+export async function GET(): Promise<Response> {
     try {
         // MongoDB 연결
         await connectToDB();
